@@ -1,5 +1,6 @@
 {
   "dependencies": {
+    "@angular/cli": "^20.3.7",
     "express": "^5.1.0"
   },
   "devDependencies": {
