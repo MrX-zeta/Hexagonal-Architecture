@@ -1,18 +1,18 @@
-import { Request, Response } from "express";
+import { NextFunction, Request, Response } from "express";
 import { UserGetAll } from "../../Application/UserGetAll/UserGetAll";
 import { UserGetOneById } from "../../Application/UserGetOneById/UserGetOneById";
 import { ServiceContainer } from "../../../Shared/Infrastructure/ServiceContainer";
 import { UserNotFoundError } from "../../Domain/Exceptions/UserNotFoundError";
 
-export class UserController{
+export class ExpressUserController{
 
-    async getAll(requ: Request, resp: Response){
+    async getAll(req: Request, resp: Response, next: NextFunction){
         const users = await ServiceContainer.user.getAll.run()
 
         return resp.json(users).status(200)
     }
 
-    async getOneById(req: Request, resp: Response){
+    async getOneById(req: Request, resp: Response, next: NextFunction){
         try{
             const user = await ServiceContainer.user.getObeById.run(req.params['id'])
             return resp.json(user).status(200)
@@ -25,7 +25,7 @@ export class UserController{
     }
 
     async create(
-        req: Request, resp: Response){
+        req: Request, resp: Response, next: NextFunction){
         const {createdAt, email, id, name} = req.body as {
             id: string,
             name: string,
@@ -45,7 +45,7 @@ export class UserController{
         }
     }
 
-    async edit(req: Request, resp: Response){
+    async edit(req: Request, resp: Response, next: NextFunction){
         const {createdAt, email, id, name} = req.body as {
             id: string,
             name: string,
@@ -60,7 +60,7 @@ export class UserController{
         }
     }
 
-    async delete(req: Request, resp: Response){
+    async delete(req: Request, resp: Response, next: NextFunction){
         try{
             const user = await ServiceContainer.user.delete.run(req.params['id'])
             return resp.status(204).json()

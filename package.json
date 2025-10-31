@@ -1,11 +1,35 @@
 {
   "dependencies": {
     "@angular/cli": "^20.3.7",
+    "@types/node": "^24.9.2",
     "express": "^5.1.0",
     "pg": "^8.16.3"
   },
   "devDependencies": {
     "@types/express": "^5.0.5",
-    "@types/pg": "^8.15.6"
-  }
+    "@types/pg": "^8.15.6",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.9.3"
+  },
+  "name": "hexagonal-arquitecture",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node dist/main.js",
+    "build": "npx tsc ./src/main.ts --outDir ./dist/",
+    "dev": "npx ts-node ./src/main.ts"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MrX-zeta/Hexagonal-Architecture.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/MrX-zeta/Hexagonal-Architecture/issues"
+  },
+  "homepage": "https://github.com/MrX-zeta/Hexagonal-Architecture#readme"
 }
