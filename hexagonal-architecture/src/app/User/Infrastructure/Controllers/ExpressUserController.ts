@@ -7,32 +7,37 @@ import { UserNotFoundError } from "../../Domain/Exceptions/UserNotFoundError";
 export class ExpressUserController{
 
     async getAll(req: Request, resp: Response, next: NextFunction){
-        const users = await ServiceContainer.user.getAll.run()
+        try{
+            const users = await ServiceContainer.user.getAll.run()
 
-        return resp.json(users).status(200)
+            return resp.json(users).status(200)
+        }catch(error){
+            next(error)
+        }
     }
 
     async getOneById(req: Request, resp: Response, next: NextFunction){
         try{
             const user = await ServiceContainer.user.getObeById.run(req.params['id'])
+            
             return resp.json(user).status(200)
         }catch(error){
             if(error instanceof UserNotFoundError){
                 return resp.status(404).json({ message: error.message })
             }
-            throw error
+            next(error)
         }
     }
 
     async create(
         req: Request, resp: Response, next: NextFunction){
-        const {createdAt, email, id, name} = req.body as {
+        try{
+            const {createdAt, email, id, name} = req.body as {
             id: string,
             name: string,
             email: string,
             createdAt: string
-        }
-        try{
+            }
             await ServiceContainer.user.create.run(
                 id,
                 name,
@@ -41,22 +46,22 @@ export class ExpressUserController{
             )
             return resp.status(201).json({ message: 'User created' })
         }catch(error){
-            return resp.status(500).json({ message: 'Internal server error' })
+            next(error)
         }
     }
 
     async edit(req: Request, resp: Response, next: NextFunction){
-        const {createdAt, email, id, name} = req.body as {
+        try{
+            const {createdAt, email, id, name} = req.body as {
             id: string,
             name: string,
             email: string,
             createdAt: string
         }
-        try{
             await ServiceContainer.user.edit.run(id,name,email,new Date(createdAt))
             return resp.status(204).json({ message: 'User created' })
         }catch(error){
-            return resp.status(500).json({ message: 'Internal server error' })
+            next(error)
         }
     }
 
@@ -65,7 +70,7 @@ export class ExpressUserController{
             const user = await ServiceContainer.user.delete.run(req.params['id'])
             return resp.status(204).json()
         }catch(error){
-            return resp.status(500).json({ message: 'Internal server error' })
+            next(error)
         }
     }
 }

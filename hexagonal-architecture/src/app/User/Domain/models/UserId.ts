@@ -3,6 +3,7 @@ export class UserId{
 
     constructor(value: String){
         this.value = value
+        this.ensureIsValid()
     }
 
     private ensureIsValid(){
