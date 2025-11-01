@@ -3,12 +3,12 @@ import { UserDelete } from "../../User/Application/UserDelete/UserDelete"
 import { UserEdit } from "../../User/Application/UserEdit/UserEdit"
 import { UserGetAll } from "../../User/Application/UserGetAll/UserGetAll"
 import { UserGetOneById } from "../../User/Application/UserGetOneById/UserGetOneById"
-import { InMemoryUserRepository } from "../../User/Infrastructure/Repositories/InMemoryUserRepository"
+import { PostgresUserRepository } from "../../User/Infrastructure/Repositories/PostgresUserRepository"
 
-const UserRepository = new InMemoryUserRepository()
+// Leer la URL de conexión desde las variables de entorno
+const DATABASE_URL = process.env['DATABASE_URL'] || 'postgresql://postgres:password@localhost:5432/Hexagonal-Arch'
 
-//In case of using Postgres:
-// const UserRepository = new PostgresUserRepository('url')
+const UserRepository = new PostgresUserRepository(DATABASE_URL)
 
 export const ServiceContainer = {
     user: {

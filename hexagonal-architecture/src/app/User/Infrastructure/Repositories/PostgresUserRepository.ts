@@ -23,15 +23,15 @@ export class PostgresUserRepository implements UserRepository{
     }
 
     async create(user: User): Promise<void> {
-        const query = 'INSERT INTO users(id, name, email) VALUES($1, $2, $3)'
-        const values = [user.id.value, user.name.value, user.email.value]
+        const query = 'INSERT INTO users(id, name, email, createdat) VALUES($1, $2, $3, $4)'
+        const values = [user.id.value, user.name.value, user.email.value, user.createdAt.value]
 
         await this.client.query(query, values)
     }
 
     async edit(user: User): Promise<void> {
-        const query = 'UPDATE users SET name = $1, email = $2 WHERE id = $3'
-        const values = [user.name.value, user.email.value, user.id.value]
+        const query = 'UPDATE users SET name = $1, email = $2, createdat = $3 WHERE id = $4'
+        const values = [user.name.value, user.email.value, user.createdAt.value, user.id.value]
 
         await this.client.query(query, values)
     }
@@ -58,7 +58,7 @@ export class PostgresUserRepository implements UserRepository{
             return null
         }
 
-        const row = result.rows[0]
+        const row = result.rows[0]!
 
         return this.mapToDomain(row)
     }

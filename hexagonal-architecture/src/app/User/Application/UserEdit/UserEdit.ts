@@ -1,3 +1,4 @@
+import { UserNotFoundError } from "../../Domain/Exceptions/UserNotFoundError";
 import { User } from "../../Domain/models/User";
 import { UserCreatedAt } from "../../Domain/models/UserCreatedAt";
 import { UserEmail } from "../../Domain/models/UserEmail";
@@ -20,6 +21,12 @@ export class UserEdit{
             new UserEmail(email),
             new UserCreatedAt(createdAt)
         )
+        const userExists = await this.repository.getOneById(user.id)
+
+        if(!userExists){
+            throw new UserNotFoundError('User not found')
+        }
+
         return this.repository.edit(user)
     }
 }

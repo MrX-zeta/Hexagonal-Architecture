@@ -8,7 +8,8 @@ const ExpressUserRouter = Router();
 ExpressUserRouter.get('/users', async (req: Request, res: Response, next: NextFunction) => {
   try {
     const users = await ServiceContainer.user.getAll.run();
-    return res.status(200).json(users);
+    const usersDTO = users.map(user => user.mapToPrimitives());
+    return res.status(200).json(usersDTO);
   } catch (error) {
     return res.status(500).json({ message: 'Internal server error', error: (error as Error).message });
   }

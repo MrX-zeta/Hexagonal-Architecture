@@ -10,7 +10,7 @@ export class ExpressUserController{
         try{
             const users = await ServiceContainer.user.getAll.run()
 
-            return resp.json(users).status(200)
+            return resp.json(users.map((user)=> user.mapToPrimitives())).status(200)
         }catch(error){
             next(error)
         }
@@ -20,7 +20,7 @@ export class ExpressUserController{
         try{
             const user = await ServiceContainer.user.getObeById.run(req.params['id'])
             
-            return resp.json(user).status(200)
+            return resp.json(user.mapToPrimitives()).status(200)
         }catch(error){
             if(error instanceof UserNotFoundError){
                 return resp.status(404).json({ message: error.message })
@@ -61,6 +61,9 @@ export class ExpressUserController{
             await ServiceContainer.user.edit.run(id,name,email,new Date(createdAt))
             return resp.status(204).json({ message: 'User created' })
         }catch(error){
+            if(error instanceof UserNotFoundError){
+                return resp.status(404).json({ message: error.message })
+            }
             next(error)
         }
     }
@@ -70,6 +73,9 @@ export class ExpressUserController{
             const user = await ServiceContainer.user.delete.run(req.params['id'])
             return resp.status(204).json()
         }catch(error){
+            if(error instanceof UserNotFoundError){
+                return resp.status(404).json({ message: error.message })
+            }
             next(error)
         }
     }

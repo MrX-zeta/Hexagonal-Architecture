@@ -1,3 +1,4 @@
+import 'dotenv/config';
 import express, { Response, Request, NextFunction } from 'express';
 import { ExpressUserRouter } from './routes/user.routes';
 
@@ -19,7 +20,8 @@ app.get('/', (req, res) => {
   res.json({ message: 'Hexagonal Architecture API' });
 })
 
-const PORT = 3000;
+const PORT = process.env['PORT'] || 3000;
 app.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`);
+  console.log(`Database: ${process.env['DATABASE_URL'] ? 'PostgreSQL' : 'In-Memory'}`);
 })

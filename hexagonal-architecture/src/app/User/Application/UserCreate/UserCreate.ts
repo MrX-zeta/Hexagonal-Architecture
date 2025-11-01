@@ -14,7 +14,12 @@ export class UserCreate{
         email:string,
         createdAt:Date
     ):Promise<void>{
-        const user = new User(new UserId(id), new UserName(name), new UserEmail(email), new UserCreatedAt(createdAt))
+        const user = new User(
+            new UserId(id), 
+            new UserName(name), 
+            new UserEmail(email), 
+            new UserCreatedAt(createdAt)
+        )
         return this.repository.create(user)
     }
 }
